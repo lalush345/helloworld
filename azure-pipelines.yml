@@ -26,12 +26,12 @@ steps:
     publishLocation: 'pipeline'
   displayName: 'Publish Artifact to Pipeline'
 
-- task: NuGetCommand@2
+- task: UniversalPackages@0
+  displayName: 'Universal publish'
   inputs:
-    command: 'push'
-    packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
-    nuGetFeedType: 'internal'
-    publishVstsFeed: 'test2'  # Replace with your Azure Artifacts feed name
-    allowPackageConflicts: true
-  displayName: 'Push Package to Azure Artifacts'
+    command: publish
+    vstsFeedPublish: 'feedname'
+    vstsFeedPackagePublish: test
+    versionOption: custom
+    versionPublish: 1.1.0
 
