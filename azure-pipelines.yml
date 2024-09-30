@@ -27,11 +27,11 @@ steps:
   displayName: 'Publish Artifact to Pipeline'
 
 - task: UniversalPackages@0
-  displayName: 'Universal publish'
+  displayName: Publish a Universal Package
   inputs:
     command: publish
-    vstsFeedPublish: 'test'
-    vstsFeedPackagePublish: test
-    versionOption: custom
-    versionPublish: 1.1.0
+    publishDirectory: '$(Build.ArtifactStagingDirectory)'
+    vstsFeedPublish: 'hello_world/test'
+    vstsFeedPackagePublish: 'helloworld'
+    packagePublishDescription: 'hello world app'
 
