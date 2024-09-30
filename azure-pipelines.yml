@@ -31,7 +31,7 @@ steps:
     command: 'push'
     packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
     nuGetFeedType: 'internal'
-    publishVstsFeed: '<your-feed-name>'  # Replace with your Azure Artifacts feed name
+    publishVstsFeed: 'test'  # Replace with your Azure Artifacts feed name
     allowPackageConflicts: true
   displayName: 'Push Package to Azure Artifacts'
 
