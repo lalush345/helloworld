@@ -19,6 +19,26 @@ steps:
     dotnet pack --configuration Release --output $(Build.ArtifactStagingDirectory)
   displayName: 'Restore, Build and Pack .NET Project'
 
+- script: |
+    currentVersion=$(cat version.txt)
+    echo "Current Version: $currentVersion"
+
+    # Split the version into an array
+    IFS='.' read -r -a versionParts <<< "$currentVersion"
+
+    # Increment the patch version (last part)
+    patchVersion=${versionParts[2]}
+    patchVersion=$((patchVersion + 1))
+
+    # Construct the new version
+    newVersion="${versionParts[0]}.${versionParts[1]}.$patchVersion"
+    echo "New Version: $newVersion"
+
+    # Optionally, you can write the new version back to the version file
+    echo $newVersion > version.txt
+
+  displayName: 'Increment Version and Print'
+
 - task: PublishPipelineArtifact@1
   inputs:
     targetPath: '$(Build.ArtifactStagingDirectory)'
