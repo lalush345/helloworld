@@ -41,10 +41,10 @@ steps:
 
 - script: |
     git config --global user.email "lalush345@gmail.com"
-    git config --global user.name "lalush"
+    git config --global user.name "lalush345"
     git add $(Build.SourcesDirectory)/version.txt
     git commit -m "Increment version to $newVersion"
-    git push origin HEAD:master  # Adjust the branch as needed
+    git push origin HEAD:master
 
   displayName: 'Commit Version Change'
   # env:
