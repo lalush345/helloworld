@@ -1,0 +1,37 @@
+trigger:
+- master
+
+pool:
+  name: 'Default'  
+  demands:
+    - agent.name -equals agentTest 
+
+
+steps:
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '8.0.400'  
+
+- script: |
+    dotnet restore
+    dotnet build --configuration Release
+    dotnet pack --configuration Release --output $(Build.ArtifactStagingDirectory)
+  displayName: 'Restore, Build and Pack .NET Project'
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Build.ArtifactStagingDirectory)'
+    artifact: 'drop'
+    publishLocation: 'pipeline'
+  displayName: 'Publish Artifact to Pipeline'
+
+- task: UniversalPackages@0
+  displayName: Publish a Universal Package
+  inputs:
+    command: publish
+    publishDirectory: '$(Build.ArtifactStagingDirectory)'
+    vstsFeedPublish: 'hello_world/test'
+    vstsFeedPackagePublish: 'helloworld'
+    packagePublishDescription: 'hello world app'
+
