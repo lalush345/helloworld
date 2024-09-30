@@ -7,7 +7,9 @@ trigger:
 - master
 
 pool:
-  vmImage: ubuntu-latest
+  name: 'Default'  # Make sure this is the agent pool where you registered your agent
+  demands:
+    - agent.name -equals agentTest 
 
 steps:
 - script: echo Hello, world!
