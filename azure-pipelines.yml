@@ -2,7 +2,7 @@ trigger:
 - master
 
 pool:
-  name: 'Default'  # Your self-hosted agent pool  
+  name: 'Default'  
   demands:
     - agent.name -equals agentTest 
 
