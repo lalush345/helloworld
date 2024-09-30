@@ -47,8 +47,8 @@ steps:
     git push origin HEAD:master
 
   displayName: 'Commit Version Change'
-  # env:
-  #   GIT_CREDENTIALS: $(System.AccessToken)  # Ensure you have this set up
+  env:
+    GIT_CREDENTIALS: $(System.AccessToken)
 
 - task: PublishPipelineArtifact@1
   inputs:
