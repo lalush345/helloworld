@@ -35,9 +35,20 @@ steps:
     echo "New Version: $newVersion"
 
     # Optionally, you can write the new version back to the version file
-    echo $newVersion > version.txt
+    echo $newVersion > $(Build.SourcesDirectory)/version.txt
 
   displayName: 'Increment Version and Print'
+
+- script: |
+    git config --global user.email "lalush345@gmail.com"
+    git config --global user.name "lalush"
+    git add $(Build.SourcesDirectory)/version.txt
+    git commit -m "Increment version to $newVersion"
+    git push origin HEAD:master  # Adjust the branch as needed
+
+  displayName: 'Commit Version Change'
+  # env:
+  #   GIT_CREDENTIALS: $(System.AccessToken)  # Ensure you have this set up
 
 - task: PublishPipelineArtifact@1
   inputs:
