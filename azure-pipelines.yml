@@ -30,7 +30,7 @@ steps:
   displayName: 'Universal publish'
   inputs:
     command: publish
-    vstsFeedPublish: 'feedname'
+    vstsFeedPublish: 'test'
     vstsFeedPackagePublish: test
     versionOption: custom
     versionPublish: 1.1.0
