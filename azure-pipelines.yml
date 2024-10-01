@@ -25,6 +25,13 @@ steps:
   displayName: 'Check Java Version'
 
 - script: |
+    echo "Listing files in the root directory:"
+    ls -la
+    echo "Listing files in HelloWorld directory:"
+    ls -la HelloWorld
+  displayName: 'List Project Files'
+
+- script: |
     dotnet restore --configfile nuget.config HelloWorld/HelloWorld.csproj
   displayName: 'Restore NuGet Packages'
 
