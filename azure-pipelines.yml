@@ -19,7 +19,7 @@ steps:
     packageType: 'sdk'
     version: '8.0.400'
 
-- task: SonarQubePrepare@4
+- task: SonarQubePrepare@5
   inputs:
     SonarQube: 'Sonarqube'
     scannerMode: 'MSBuild'
@@ -37,7 +37,7 @@ steps:
     dotnet pack --configuration Release --output $(Build.ArtifactStagingDirectory)
   displayName: 'Restore, Build and Pack .NET Project'
 
-- task: SonarQubeAnalyze@4
+- task: SonarQubeAnalyze@5
   displayName: 'Run SonarQube Analysis'
 
 - script: |
