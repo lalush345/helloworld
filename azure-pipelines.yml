@@ -6,30 +6,18 @@ pool:
   demands:
     - agent.name -equals agentTest 
 
-variables:
-  sonarHostUrl: 'http://20.82.137.57:9000'
-  sonarLogin: 'squ_c94a1619affde632fbccb10e9d6c8453d6f09527'
-  sonarProjectKey: 'test'
-  sonarProjectName: 'test'
-  sonarProjectVersion: '1.0'
-
 steps:
 - task: UseDotNet@2
   inputs:
     packageType: 'sdk'
     version: '8.0.400'
 
-- task: SonarQubePrepare@5
+- task: SonarQubePrepare@6
   inputs:
-    SonarQube: 'Sonarqube'
+    SonarQube: 'sonarqube'
     scannerMode: 'MSBuild'
-    projectKey: '$(sonarProjectKey)'
-    projectName: '$(sonarProjectName)'
-    projectVersion: '$(sonarProjectVersion)'
-    extraProperties: |
-      sonar.login=$(sonarLogin)
-      sonar.host.url=$(sonarHostUrl)
-  displayName: 'Prepare Analysis on SonarQube'
+    projectKey: 'test'
+    projectName: 'test'
 
 - script: |
     dotnet restore
@@ -37,8 +25,9 @@ steps:
     dotnet pack --configuration Release --output $(Build.ArtifactStagingDirectory)
   displayName: 'Restore, Build and Pack .NET Project'
 
-- task: SonarQubeAnalyze@5
-  displayName: 'Run SonarQube Analysis'
+- task: SonarQubeAnalyze@6
+  inputs:
+    jdkversion: 'JAVA_HOME_17_X64'
 
 - script: |
     # Get the current build ID (acting as version number)
