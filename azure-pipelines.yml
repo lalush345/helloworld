@@ -25,6 +25,9 @@ steps:
     dotnet pack --configuration Release --output $(Build.ArtifactStagingDirectory)
   displayName: 'Restore, Build and Pack .NET Project'
 
+- script: java -version
+  displayName: 'Check Java Version'
+
 - task: SonarQubeAnalyze@6
   inputs:
     jdkversion: 'JAVA_HOME_17_X64'
