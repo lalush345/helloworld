@@ -50,5 +50,5 @@ steps:
   displayName: 'Pack NuGet Package'
 
 - script: |
-    dotnet nuget push $(Build.ArtifactStagingDirectory)/*.nupkg --source "https://pkgs.dev.azure.com/lalush345/_packaging/lalush345/nuget/v3/index.json" --api-key "$(NuGetApiKey)"
+    dotnet nuget push $(Build.ArtifactStagingDirectory)/*.nupkg --source "https://pkgs.dev.azure.com/lalush345/_packaging/lalush345/nuget/v3/index.json" --api-key "NuGetApiKey"
   displayName: 'Push Package to Azure Artifacts'
