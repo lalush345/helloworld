@@ -27,16 +27,14 @@ steps:
 - script: |
     echo "Listing files in the root directory:"
     ls -la
-    echo "Listing files in HelloWorld directory:"
-    ls -la HelloWorld
   displayName: 'List Project Files'
 
 - script: |
-    dotnet restore --configfile nuget.config HelloWorld/HelloWorld.csproj
+    dotnet restore --configfile nuget.config HelloWorldApp.csproj
   displayName: 'Restore NuGet Packages'
 
 - script: |
-    dotnet build --configuration Release HelloWorld/HelloWorld.csproj
+    dotnet build --configuration Release HelloWorldApp.csproj
   displayName: 'Build Solution in Release Mode'
 
 - task: SonarQubeAnalyze@6
@@ -48,7 +46,7 @@ steps:
   displayName: 'Print Version'
 
 - script: |
-    dotnet pack --configuration Release --output $(Build.ArtifactStagingDirectory) HelloWorld/HelloWorld.csproj
+    dotnet pack --configuration Release --output $(Build.ArtifactStagingDirectory) HelloWorldApp.csproj
   displayName: 'Pack NuGet Package'
 
 - script: |
