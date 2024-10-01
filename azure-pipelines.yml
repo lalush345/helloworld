@@ -26,7 +26,7 @@ steps:
   displayName: 'Check Java Version'
 
 - script: |
-    # Format the version number (e.g., 1.0.$(Build.BuildId))
+    # Format the version number as X.Y.Z where X=1, Y=0, Z=BuildId
     versionNumber="1.0.$(Build.BuildId)"
     
     # Set the version as a pipeline variable
@@ -41,8 +41,7 @@ steps:
     command: 'pack'
     packagesToPack: '**/*.csproj'  # Adjust this if needed to point to your project files
     includeSymbols: true  # Include symbols if needed
-    versioningScheme: 'byBuildNumber'  # Optional: Specify versioning scheme
-    version: '$(packageVersion)'  # Use formatted version
+    version: '$(packageVersion)'  # Use formatted version from the previous step
   displayName: 'Pack .NET Project with NuGet'
 
 - task: SonarQubeAnalyze@6
@@ -50,17 +49,11 @@ steps:
     jdkversion: 'JAVA_HOME_17_X64'
 
 - script: |
-    # Get the current build ID (acting as version number)
-    currentVersion=$(Build.BuildId)
+    # This step may be unnecessary if you're already using the version set above.
+    # However, if you need to perform additional logic, keep it or modify as needed.
+    echo "Current build ID is: $(Build.BuildId)"
     
-    # Increment the build ID
-    newVersion=$((currentVersion + 1))
-    
-    # Print the new version to the console
-    echo "##vso[task.setvariable variable=version]$newVersion"
-    echo "New version is: $newVersion"
-    
-  displayName: 'Increment and Print Version'
+  displayName: 'Print Build ID'
 
 - task: NuGetCommand@2
   inputs:
