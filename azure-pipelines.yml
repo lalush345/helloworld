@@ -7,11 +7,6 @@ pool:
     - agent.name -equals agentTest 
 
 steps:
-- task: UseDotNet@2
-  inputs:
-    packageType: 'sdk'
-    version: '8.0.400'
-
 - task: SonarQubePrepare@6
   inputs:
     SonarQube: 'sonarqube'
@@ -19,15 +14,23 @@ steps:
     projectKey: 'test'
     projectName: 'test'
 
-- script: |
-    dotnet restore
-    dotnet build --configuration Release
-    dotnet pack --configuration Release --output $(Build.ArtifactStagingDirectory)
-  displayName: 'Restore, Build and Pack .NET Project'
-
-- script: java -version
-  displayName: 'Check Java Version'
-
+- task: NuGetCommand@2
+  inputs:
+    command: 'restore'
+    restoreSolution: '**/*.sln'
+    feedsToUse: 'select'
+    vstsFeed: '2eed1aca-5e9e-41cc-9947-25e256bbcd2c/ca03e69e-8777-409e-a7fa-8619a201930b'
+  displayName: 'Restore, Build and Pack .NET Project with NuGet'
+  
+- task: NuGetCommand@2
+  inputs:
+    command: 'pack'
+    packagesToPack: '**/*.csproj'  # Adjust this if needed to point to your project files
+    includeSymbols: true  # Include symbols if needed
+    versioningScheme: 'byBuildNumber'  # Optional: Specify versioning scheme
+    version: '$(Build.BuildId)'  # Use build ID as version, adjust if needed
+  displayName: 'Pack .NET Project with NuGet'
+  
 - task: SonarQubeAnalyze@6
   inputs:
     jdkversion: 'JAVA_HOME_17_X64'
@@ -45,18 +48,13 @@ steps:
     
   displayName: 'Increment and Print Version'
 
-- task: PublishPipelineArtifact@1
+- task: NuGetCommand@2
   inputs:
-    targetPath: '$(Build.ArtifactStagingDirectory)'
-    artifact: 'drop'
-    publishLocation: 'pipeline'
-  displayName: 'Publish Artifact to Pipeline'
+    command: 'pack'
+    packagesToPack: '**/*.csproj'  # Adjust this if needed to point to your project files
+    includeSymbols: true  # Include symbols if needed
+    versioningScheme: 'byBuildNumber'  # Optional: Specify versioning scheme
+    version: '$(Build.BuildId)'  # Use build ID as version, adjust if needed
+  displayName: 'Pack .NET Project with NuGet'
 
-- task: UniversalPackages@0
-  displayName: Publish a Universal Package
-  inputs:
-    command: publish
-    publishDirectory: '$(Build.ArtifactStagingDirectory)'
-    vstsFeedPublish: 'hello_world/test'
-    vstsFeedPackagePublish: 'helloworld'
-    packagePublishDescription: 'hello world app'
+
