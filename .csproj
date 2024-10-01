@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <PackageId>1</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>lalush</Authors>
+    <Description>print hello world.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression> <!-- Or your chosen license -->
+  </PropertyGroup>
+
+</Project>
