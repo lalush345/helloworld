@@ -20,17 +20,31 @@ steps:
     restoreSolution: '**/*.sln'
     feedsToUse: 'select'
     vstsFeed: '2eed1aca-5e9e-41cc-9947-25e256bbcd2c/ca03e69e-8777-409e-a7fa-8619a201930b'
-  displayName: 'Restore, Build and Pack .NET Project with NuGet'
-  
+  displayName: 'Restore .NET Project with NuGet'
+
+- script: java -version
+  displayName: 'Check Java Version'
+
+- script: |
+    # Format the version number (e.g., 1.0.$(Build.BuildId))
+    versionNumber="1.0.$(Build.BuildId)"
+    
+    # Set the version as a pipeline variable
+    echo "##vso[task.setvariable variable=packageVersion]$versionNumber"
+    
+    # Print the version to the console
+    echo "Version number is: $versionNumber"
+  displayName: 'Set Version Number'
+
 - task: NuGetCommand@2
   inputs:
     command: 'pack'
     packagesToPack: '**/*.csproj'  # Adjust this if needed to point to your project files
     includeSymbols: true  # Include symbols if needed
     versioningScheme: 'byBuildNumber'  # Optional: Specify versioning scheme
-    version: '$(Build.BuildId)'  # Use build ID as version, adjust if needed
+    version: '$(packageVersion)'  # Use formatted version
   displayName: 'Pack .NET Project with NuGet'
-  
+
 - task: SonarQubeAnalyze@6
   inputs:
     jdkversion: 'JAVA_HOME_17_X64'
@@ -50,11 +64,8 @@ steps:
 
 - task: NuGetCommand@2
   inputs:
-    command: 'pack'
-    packagesToPack: '**/*.csproj'  # Adjust this if needed to point to your project files
-    includeSymbols: true  # Include symbols if needed
-    versioningScheme: 'byBuildNumber'  # Optional: Specify versioning scheme
-    version: '$(Build.BuildId)'  # Use build ID as version, adjust if needed
-  displayName: 'Pack .NET Project with NuGet'
-
-
+    command: 'push'
+    packagesToPush: '**/*.nupkg'  # Adjust this if needed to match your output package
+    nuGetFeedType: 'internal'
+    vstsFeed: '2eed1aca-5e9e-41cc-9947-25e256bbcd2c/ca03e69e-8777-409e-a7fa-8619a201930b'
+  displayName: 'Push NuGet Package to Azure Artifacts'
